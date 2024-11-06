@@ -1,4 +1,4 @@
-import Product from '../src/model/Product';
+import Product from '../src/model/Product.js';
 
 describe('상품 테스트', () => {
   const product = new Product('콜라', 1000, 10, '탄산2+1');
