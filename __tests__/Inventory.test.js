@@ -11,11 +11,10 @@ describe('재고 관리 클래스 테스트', () => {
   inventory.add(basicProduct);
 
   test('상품의 재고 정보를 확인 가능하다.', () => {
-    expect(inventory.getProductInfo('콜라')).toStrictEqual({
-      all: [promotionProduct, basicProduct],
-      promotion: promotionProduct,
-      basic: basicProduct,
-    });
+    expect(inventory.getAllProductsInfo('콜라')).toStrictEqual([
+      promotionProduct,
+      basicProduct,
+    ]);
   });
 
   test('프로모션 중인 상품의 재고보다 더 많은 상품을 구매할 경우 오류를 낸다.', () => {
@@ -26,7 +25,7 @@ describe('재고 관리 클래스 테스트', () => {
 
   test('프로모션 중인 상품을 구매한다.', () => {
     inventory.buyPromotionProduct('콜라', 3);
-    expect(inventory.getProductInfo('콜라').promotion.getQuantity()).toBe(2);
+    expect(inventory.getPromotionProductInfo('콜라').getQuantity()).toBe(2);
   });
 
   test('프로모션 중이 아닌 상품의 재고보다 더 많은 상품을 구매할 경우 오류를 낸다.', () => {
@@ -37,6 +36,6 @@ describe('재고 관리 클래스 테스트', () => {
 
   test('프로모션 중이 아닌 상품을 구매한다.', () => {
     inventory.buyBasicProduct('콜라', 3);
-    expect(inventory.getProductInfo('콜라').basic.getQuantity()).toBe(7);
+    expect(inventory.getBasicProductInfo('콜라').getQuantity()).toBe(7);
   });
 });

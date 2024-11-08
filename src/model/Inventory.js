@@ -7,15 +7,20 @@ class Inventory {
     this.#productList.push(product);
   }
 
-  getProductInfo(productName) {
-    const productsByName = this.#getProductsByName(productName);
-    return {
-      all: productsByName,
-      promotion: productsByName.find(
-        (product) => product.getPromotion() !== null
-      ),
-      basic: productsByName.find((product) => product.getPromotion() === null),
-    };
+  getAllProductsInfo(productName) {
+    return this.#getProductsByName(productName);
+  }
+
+  getPromotionProductInfo(productName) {
+    return this.#getProductsByName(productName).find(
+      (product) => product.getPromotion() !== null
+    );
+  }
+
+  getBasicProductInfo(productName) {
+    return this.#getProductsByName(productName).find(
+      (product) => product.getPromotion() === null
+    );
   }
 
   #getProductsByName(productName) {
@@ -25,13 +30,13 @@ class Inventory {
   }
 
   buyPromotionProduct(productName, amount) {
-    const promotionProduct = this.getProductInfo(productName).promotion;
+    const promotionProduct = this.getPromotionProductInfo(productName);
     Validator.checkCanBuy(promotionProduct.getQuantity(), amount);
     promotionProduct.buy(amount);
   }
 
   buyBasicProduct(productName, amount) {
-    const basicProduct = this.getProductInfo(productName).basic;
+    const basicProduct = this.getBasicProductInfo(productName);
     Validator.checkCanBuy(basicProduct.getQuantity(), amount);
     basicProduct.buy(amount);
   }
