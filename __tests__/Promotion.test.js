@@ -1,4 +1,4 @@
-import PromotionInfo from '../src/model/PromotionInfo';
+import PromotionInfo from '../src/model/PromotionInfo.js';
 
 describe('프로모션 정보 클래스 테스트', () => {
   const promotionInfo = new PromotionInfo();
