@@ -8,7 +8,11 @@ class PromotionCalculator {
   }
 
   #getPromotionProductQuantity(productName) {
-    return this.#inventory.getPromotionProductQuantity(productName);
+    const promotionProduct =
+      this.#inventory.getPromotionProductInfo(productName);
+    if (!this.#promotionInfo.checkApplicable(promotionProduct.getPromotion()))
+      return 0;
+    return promotionProduct.getQuantity();
   }
 
   #getEvent(productName) {
