@@ -7,7 +7,7 @@ class PromotionCalculator {
     this.#promotionInfo = promotionInfo;
   }
 
-  #getPromotionProductQuantity(productName) {
+  getPromotionProductQuantity(productName) {
     const promotionProduct =
       this.#inventory.getPromotionProductInfo(productName);
     if (!this.#promotionInfo.checkApplicable(promotionProduct.getPromotion()))
@@ -23,7 +23,7 @@ class PromotionCalculator {
 
   getPromotionAmount(productName, amount) {
     const promotionProductQuantity =
-      this.#getPromotionProductQuantity(productName);
+      this.getPromotionProductQuantity(productName);
     const event = this.#getEvent(productName);
 
     const unit = event.get + event.buy;
@@ -47,7 +47,7 @@ class PromotionCalculator {
 
   #isEnoughToPromotion(productName, amount, event) {
     const promotionProductQuantity =
-      this.#getPromotionProductQuantity(productName);
+      this.getPromotionProductQuantity(productName);
     const promotionAmount = this.getPromotionAmount(productName, amount);
     const rest = amount - promotionAmount;
 

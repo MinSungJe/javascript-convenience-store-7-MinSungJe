@@ -27,8 +27,8 @@ const addProducts = (inventory) => {
 };
 
 const addPromotions = (promotionInfo) => {
-  Loader.promotions().forEach(({ name, buy, get, startDate, endDate }) => {
-    promotionInfo.addEvent(name, buy, get, startDate, endDate);
+  Loader.promotions().forEach(({ name, buy, get, start_date, end_date }) => {
+    promotionInfo.addEvent(name, buy, get, start_date, end_date);
   });
 };
 

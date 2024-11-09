@@ -29,6 +29,10 @@ describe('프로모션 적용 컨트롤러 테스트', () => {
     expect(promotionCalculator.getBasicAmount('콜라', 5)).toBe(2);
   });
 
+  test('프로모션 혜택을 받지 못한 상품 수를 반환한다.', () => {
+    expect(promotionCalculator.getBasicAmount('콜라', 9)).toBe(3);
+  });
+
   test('프로모션 적용이 가능한 상품에 대해 고객이 해당 수량보다 적게 가져온 경우, 추가로 가져올 수 있는 수량을 반환한다.', () => {
     expect(promotionCalculator.getCanFreeMore('콜라', 5)).toBe(1);
   });
