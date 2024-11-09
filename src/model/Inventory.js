@@ -42,6 +42,13 @@ class Inventory {
     );
   }
 
+  getAllProductsQuantity(productName) {
+    return (
+      this.getPromotionProductQuantity(productName) +
+      this.getBasicProductQuantity(productName)
+    );
+  }
+
   getPromotionProductQuantity(productName) {
     const promotionProduct = this.getPromotionProductInfo(productName);
     if (!promotionProduct) return 0;

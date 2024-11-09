@@ -11,7 +11,7 @@ class App {
       OutputView.printMessage('안녕하세요. W편의점입니다.');
       OutputView.printProducts(inventory);
 
-      const itemData = await loopWhileValid(InputView.readItem);
+      const itemData = await loopWhileValid(InputView.readItem, inventory);
 
       const restartInput = await loopWhileValid(InputView.replay);
       if (restartInput === 'N') break;
