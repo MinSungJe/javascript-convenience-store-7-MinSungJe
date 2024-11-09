@@ -1,4 +1,4 @@
-import Validator from '../utils/Validator';
+import Validator from '../utils/Validator.js';
 
 class Inventory {
   #productList = [];
@@ -21,6 +21,18 @@ class Inventory {
     return this.#getProductsByName(productName).find(
       (product) => product.getPromotion() === null
     );
+  }
+
+  getPromotionProductQuantity(productName) {
+    const promotionProduct = this.getPromotionProductInfo(productName);
+    if (!promotionProduct) return 0;
+    return promotionProduct.getQuantity();
+  }
+
+  getBasicProductQuantity(productName) {
+    const basicProduct = this.getBasicProductInfo(productName);
+    if (!basicProduct) return 0;
+    return basicProduct.getQuantity();
   }
 
   #getProductsByName(productName) {
