@@ -28,7 +28,7 @@ class PromotionCalculator {
     return limit - (limit % unit);
   }
 
-  getbasicAmount(productName, amount) {
+  getBasicAmount(productName, amount) {
     return amount - this.getPromotionAmount(productName, amount);
   }
 
@@ -45,7 +45,7 @@ class PromotionCalculator {
     const promotionProductQuantity =
       this.#getPromotionProductQuantity(productName);
     const promotionAmount = this.getPromotionAmount(productName, amount);
-    const rest = amount % promotionAmount;
+    const rest = amount - promotionAmount;
 
     return (
       rest === event.buy &&
