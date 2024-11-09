@@ -1,4 +1,36 @@
 import fs from 'fs';
+import Inventory from '../model/Inventory.js';
+import PromotionInfo from '../model/PromotionInfo.js';
+import Product from '../model/Product.js';
+
+const loadFromPublic = () => {
+  const inventory = new Inventory();
+  const promotionInfo = new PromotionInfo();
+
+  addProducts(inventory);
+  addPromotions(promotionInfo);
+
+  return { inventory, promotionInfo };
+};
+
+const convertProductsList = () => {
+  return Loader.products().map(
+    ({ name, price, quantity, promotion }) =>
+      new Product(name, price, quantity, promotion)
+  );
+};
+
+const addProducts = (inventory) => {
+  convertProductsList().forEach((product) => {
+    inventory.add(product);
+  });
+};
+
+const addPromotions = (promotionInfo) => {
+  Loader.promotions().forEach(({ name, buy, get, startDate, endDate }) => {
+    promotionInfo.addEvent(name, buy, get, startDate, endDate);
+  });
+};
 
 const Loader = {
   products: () => {
@@ -43,4 +75,4 @@ const parseValue = (value) => {
   return trimmedValue;
 };
 
-export default Loader;
+export default loadFromPublic;

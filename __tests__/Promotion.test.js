@@ -13,8 +13,8 @@ describe('프로모션 정보 클래스 테스트', () => {
         name: '탄산2+1',
         buy: 2,
         get: 1,
-        startDate: '2024-01-01',
-        endDate: '2024-12-31',
+        start_date: '2024-01-01',
+        end_date: '2024-12-31',
       },
     ],
     [
@@ -23,8 +23,8 @@ describe('프로모션 정보 클래스 테스트', () => {
         name: 'MD추천상품',
         buy: 1,
         get: 1,
-        startDate: '2022-01-01',
-        endDate: '2023-12-31',
+        start_date: '2022-01-01',
+        end_date: '2023-12-31',
       },
     ],
     [
@@ -33,8 +33,8 @@ describe('프로모션 정보 클래스 테스트', () => {
         name: '반짝할인',
         buy: 1,
         get: 1,
-        startDate: '2024-11-01',
-        endDate: '2024-11-30',
+        start_date: '2024-11-01',
+        end_date: '2024-11-30',
       },
     ],
   ])(

@@ -3,8 +3,8 @@ import { DateTimes } from '@woowacourse/mission-utils';
 class PromotionInfo {
   #eventList = [];
 
-  addEvent(name, buy, get, startDate, endDate) {
-    this.#eventList.push({ name, buy, get, startDate, endDate });
+  addEvent(name, buy, get, start_date, end_date) {
+    this.#eventList.push({ name, buy, get, start_date, end_date });
   }
 
   getEvent(eventName) {
@@ -15,8 +15,8 @@ class PromotionInfo {
     const event = this.getEvent(eventName);
 
     const today = DateTimes.now();
-    const startDay = new Date(event.startDate);
-    const endDay = new Date(event.endDate);
+    const startDay = new Date(event.start_date);
+    const endDay = new Date(event.end_date);
 
     return today >= startDay && today <= endDay;
   }
