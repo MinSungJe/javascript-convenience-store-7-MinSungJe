@@ -41,8 +41,8 @@ class App {
 
     for (const { name, amount } of itemList) {
       let totalBuyAmount = amount;
-      totalBuyAmount = await this.getFreeMoreInput(name, amount, recipt);
-      totalBuyAmount = await this.askNotPromotionInput(name, amount, recipt);
+      totalBuyAmount += await this.getFreeMoreInput(name, amount, recipt);
+      totalBuyAmount += await this.askNotPromotionInput(name, amount, recipt);
       this.processPurchase(recipt, name, totalBuyAmount);
     }
     await this.memberShipInput(recipt);
@@ -64,11 +64,9 @@ class App {
   }
 
   processGetFreeMoreInput(userInput, name, amount) {
-    let totalBuyAmount = amount;
     if (userInput === 'Y')
-      totalBuyAmount += this.promotionCalculator.getCanFreeMore(name, amount);
-
-    return totalBuyAmount;
+      return this.promotionCalculator.getCanFreeMore(name, amount);
+    return 0;
   }
 
   async askNotPromotionInput(name, amount) {
@@ -86,11 +84,9 @@ class App {
   }
 
   processNotPromotionInput(userInput, name, amount) {
-    let totalBuyAmount = amount;
     if (userInput === 'N')
-      totalBuyAmount -= this.promotionCalculator.getBasicAmount(name, amount);
-
-    return totalBuyAmount;
+      return -this.promotionCalculator.getBasicAmount(name, amount);
+    return 0;
   }
 
   async memberShipInput(recipt) {
