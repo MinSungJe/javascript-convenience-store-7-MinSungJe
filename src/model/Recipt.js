@@ -29,8 +29,49 @@ class Recipt {
     return this.#history.free;
   }
 
+  getTotal() {
+    return this.#history.total;
+  }
+
+  getTotalAmount() {
+    return this.#history.buy.reduce((acc, product) => acc + product.amount, 0);
+  }
+
+  getPromotionDiscount() {
+    return this.#history.promotionDiscount;
+  }
+
+  getMembershipDiscount() {
+    return this.#history.membershipDiscount;
+  }
+
+  getResult() {
+    return this.#history.result;
+  }
+
+  calculateTotal() {
+    this.#history.total = this.#history.buy.reduce(
+      (acc, product) => acc + product.price,
+      0
+    );
+  }
+
+  calculatePromotionDiscount() {
+    this.#history.promotionDiscount = this.#history.free.reduce(
+      (acc, product) => acc + product.price,
+      0
+    );
+  }
+
   calculateMembershipDiscount() {
     this.#history.membershipDiscount = this.#history.noPromotionPrice * 0.3;
+  }
+
+  calculateResult() {
+    this.#history.result =
+      this.#history.total -
+      this.#history.promotionDiscount -
+      this.#history.membershipDiscount;
   }
 }
 

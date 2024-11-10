@@ -54,6 +54,7 @@ class PromotionCalculator {
 
   getFreeAmount(productName, amount) {
     const event = this.#getEvent(productName);
+    if (event == null) return 0;
     const unit = event.buy + event.get;
     return (this.getPromotionAmount(productName, amount) / unit) * event.get;
   }
