@@ -63,7 +63,7 @@ class App {
     return this.processGetFreeMoreInput(userInput, name, amount, recipt);
   }
 
-  processGetFreeMoreInput(userInput, name, amount, recipt) {
+  processGetFreeMoreInput(userInput, name, amount) {
     let totalBuyAmount = amount;
     if (userInput === 'Y')
       totalBuyAmount += this.promotionCalculator.getCanFreeMore(name, amount);
@@ -71,7 +71,7 @@ class App {
     return totalBuyAmount;
   }
 
-  async askNotPromotionInput(name, amount, recipt) {
+  async askNotPromotionInput(name, amount) {
     const basicAmount = this.promotionCalculator.getBasicAmount(name, amount);
     let userInput = 'Y';
     const promotionQuantity =
@@ -110,6 +110,20 @@ class App {
     if (totalFreeAmount > 0)
       recipt.addFreeProduct(name, totalFreeAmount, price * totalFreeAmount);
     recipt.addNoPromotionPrice(totalNoPromotionPrice);
+    this.buy(name, totalBuyAmount);
+  }
+
+  buy(productName, amount) {
+    const promotionAmountToBuy =
+      this.promotionCalculator.getPromotionAmountToBuy(productName, amount);
+    const basicAmountToBuy = this.promotionCalculator.getBasicAmountToBuy(
+      productName,
+      amount
+    );
+    if (promotionAmountToBuy !== 0)
+      this.inventory.buyPromotionProduct(productName, promotionAmountToBuy);
+    if (basicAmountToBuy !== 0)
+      this.inventory.buyBasicProduct(productName, basicAmountToBuy);
   }
 
   calculatePurchase(recipt) {

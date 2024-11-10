@@ -59,6 +59,16 @@ class PromotionCalculator {
     return (this.getPromotionAmount(productName, amount) / unit) * event.get;
   }
 
+  getPromotionAmountToBuy(productName, amount) {
+    const promotionProductQuantity =
+      this.getPromotionProductQuantity(productName);
+    return Math.min(amount, promotionProductQuantity);
+  }
+
+  getBasicAmountToBuy(productName, amount) {
+    return amount - this.getPromotionAmountToBuy(productName, amount);
+  }
+
   #getUnit(productName) {
     const event = this.#getEvent(productName);
     return event.buy + event.get;
