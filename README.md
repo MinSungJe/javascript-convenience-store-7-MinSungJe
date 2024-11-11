@@ -189,7 +189,7 @@
 
 ## ⛳ 구현할 기능 목록
 
-- [x] **상품**
+- [x] **상품** [👉 model/Product.js](https://github.com/MinSungJe/javascript-convenience-store-7-MinSungJe/blob/main/src/model/Product.js)
 
   - 각 상품의 다음 정보를 저장한다.
     - 이름
@@ -200,12 +200,12 @@
       - 동일 상품에 여러 프로모션이 적용되지 않는다.
   - 각 상품을 구매하면 그 상품의 양이 적어져야 한다.
 
-- [x] **프로모션 할인 정보**
+- [x] **프로모션 할인 정보** [👉 model/PromotionInfo.js](https://github.com/MinSungJe/javascript-convenience-store-7-MinSungJe/blob/main/src/model/PromotionInfo.js)
 
   - 프로모션은 N개 구매 시 1개 무료 증정의 형태이다.
   - 오늘 날짜가 프로모션 기간 내에 포함됐는지 확인한다.
 
-- [x] **재고 관리**
+- [x] **재고 관리** [👉 model/Inventory.js](https://github.com/MinSungJe/javascript-convenience-store-7-MinSungJe/blob/main/src/model/Inventory.js)
 
   - 상품의 재고 수량을 확인 가능하다.
   - 프로모션이 적용되는 재고과 그렇지 않은 재고를 분리한다.
@@ -213,45 +213,45 @@
   - 고객이 상품을 구매할 때마다, 결제된 수량만큼 해당 상품의 재고에서 차감하고, 수량을 관리한다.
     - 재고를 차감함으로써 시스템은 최신 재고 상태를 유지하며, 다음 고객이 구매할 때 정확한 재고 정보를 제공한다.
 
-- [x] **구매 내역 관리**
+- [x] **구매 내역 관리** [👉 model/Recipt.js](https://github.com/MinSungJe/javascript-convenience-store-7-MinSungJe/blob/main/src/model/Recipt.js)
 
   - 상품을 구매했는지, 증정받았는지 여부를 구분한다.
     - 상품을 정가주고 구매한 경우 구매한 상품 정보를 담아야 한다.
     - 상품을 증정받은 경우 증정받은 상품 정보를 담아야 한다.
 
-- [x] **프로모션 할인 적용**
+- [x] **프로모션 할인 적용** [👉 utils/PromotionCalculator.js](https://github.com/MinSungJe/javascript-convenience-store-7-MinSungJe/blob/main/src/utils/PromotionCalculator.js)
 
   - 프로모션 혜택은 프로모션 재고 내에서만 적용할 수 있고, 부족할 경우에는 일반 재고를 사용한다.
   - 프로모션 재고가 부족하여 일부 수량을 프로모션 혜택 없이 결제해야 하는 경우, 일부 수량에 대해 정가로 결제하게 됨을 안내한다.
   - 프로모션 적용이 가능한 상품에 대해 고객이 해당 수량보다 적게 가져온 경우, 필요한 수량을 추가로 가져오면 혜택을 받을 수 있음을 안내한다.
 
-- [x] **멤버십 할인**
+- [x] **멤버십 할인** [👉 utils/getMemberDiscount.js](https://github.com/MinSungJe/javascript-convenience-store-7-MinSungJe/blob/main/src/utils/getMemberDiscount.js)
 
   - 멤버십 회원인 경우 금액의 30%를 할인받는다.
   - 프로모션 미적용 금액에 대해 멤버십 할인을 받는다.
   - 멤버십 할인의 최대 한도는 8,000원이다.
 
-- [x] **최종 금액 계산**
+- [x] **최종 금액 계산** [👉 controller/Purchaser.js](https://github.com/MinSungJe/javascript-convenience-store-7-MinSungJe/blob/main/src/controller/Purchaser.js)
 
   - 사용자가 입력한 상품의 가격과 수량을 기반으로 최종 결제 금액을 계산한다.
     - 총구매액은 상품별 가격과 수량을 곱하여 계산하며, 프로모션 및 멤버십 할인 정책을 반영하여 최종 결제 금액을 산출한다.
 
-- [x] **public 파일 정보 연동**
+- [x] **public 파일 정보 연동** [👉 utils/loadFromPublic.js](https://github.com/MinSungJe/javascript-convenience-store-7-MinSungJe/blob/main/src/utils/loadFromPublic.js)
 
   - public 파일 내 정보를 읽어와서 재고와 프로모션 정보를 연동한다.
 
-- [x] **사용자 입력부 - 구매**
+- [x] **사용자 입력부 - 구매** [👉 view/InputView.js](https://github.com/MinSungJe/javascript-convenience-store-7-MinSungJe/blob/main/src/view/InputView.js)
 
-- 구매할 상품명과 수량을 특정 형식에 맞게 입력받는다.
+  - 구매할 상품명과 수량을 특정 형식에 맞게 입력받는다.
 
-  - 형식(`[콜라-3],[에너지바-5]`)이 맞지 않은 경우를 확인한다.
-    - 에러문구: `[ERROR] 올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.`
-  - 존재하지 않는 상품을 입력한 경우를 확인한다.
-    - 에러문구: `[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.`
-  - 구매 수량이 재고 수량을 초과한 경우를 확인한다.
-    - 에러문구: `[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.`
+    - 형식(`[콜라-3],[에너지바-5]`)이 맞지 않은 경우를 확인한다.
+      - 에러문구: `[ERROR] 올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.`
+    - 존재하지 않는 상품을 입력한 경우를 확인한다.
+      - 에러문구: `[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.`
+    - 구매 수량이 재고 수량을 초과한 경우를 확인한다.
+      - 에러문구: `[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.`
 
-- [x] **사용자 입력부 - Y/N**
+- [x] **사용자 입력부 - Y/N** [👉 view/InputView.js](https://github.com/MinSungJe/javascript-convenience-store-7-MinSungJe/blob/main/src/view/InputView.js)
 
   - 프로모션 관련 안내 적용 여부를 Y 또는 N으로 받는다.
   - 멤버십 할인 적용 여부를 Y 또는 N으로 받는다.
@@ -259,7 +259,7 @@
   - 만약 에러가 발생할 수 있는 경우, 특정 에러 문구를 지정하지 않았다면 다음과 같은 에러 문구를 안내한다.
     - `[ERROR] 잘못된 입력입니다. 다시 입력해 주세요.`
 
-- [x] **콘솔 출력부**
+- [x] **콘솔 출력부** [👉 view/OutputView.js](https://github.com/MinSungJe/javascript-convenience-store-7-MinSungJe/blob/main/src/view/OutputView.js)
   - 가지고 있는 재고 정보를 출력한다.
   - 구매 내역과 산출한 금액 정보를 영수증으로 출력한다.
   - 기타 입력 관련 안내 문구를 출력한다.
