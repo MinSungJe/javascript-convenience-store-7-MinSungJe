@@ -137,6 +137,36 @@ describe('편의점', () => {
     });
   });
 
+  test('출력 예시랑 같은 상황의 테스트케이스입니다.', async () => {
+    await run({
+      inputs: [
+        '[콜라-3],[에너지바-5]',
+        'Y',
+        'Y',
+        '[콜라-10]',
+        'Y',
+        'N',
+        'Y',
+        '[오렌지주스-1]',
+        'Y',
+        'Y',
+        'N',
+      ],
+      expectedIgnoringWhiteSpaces: [
+        '내실돈9,000',
+        '내실돈8,000',
+        '내실돈1,800',
+      ],
+    });
+  });
+
+  test('멤버십 할인은 최대 8000원까지입니다.', async () => {
+    await run({
+      inputs: ['[정식도시락-8]', 'Y', 'N'],
+      expectedIgnoringWhiteSpaces: ['멤버십할인-8,000', '내실돈43,200'],
+    });
+  });
+
   test('기간에 해당하지 않는 프로모션 적용', async () => {
     mockNowDate('2024-02-01');
 
@@ -146,12 +176,38 @@ describe('편의점', () => {
     });
   });
 
-  test('예외 테스트', async () => {
+  test('재고 수량을 초과한 경우', async () => {
     await runExceptions({
       inputs: ['[컵라면-12]', 'N', 'N'],
       inputsToTerminate: INPUTS_TO_TERMINATE,
       expectedErrorMessage:
         '[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.',
+    });
+  });
+
+  test('존재하지 않은 상품을 조회한 경우', async () => {
+    await runExceptions({
+      inputs: ['[민성제-1]', 'N', 'N'],
+      inputsToTerminate: INPUTS_TO_TERMINATE,
+      expectedErrorMessage:
+        '[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.',
+    });
+  });
+
+  test('입력한 형식이 잘못된 경우', async () => {
+    await runExceptions({
+      inputs: ['컵라면-12', 'N', 'N'],
+      inputsToTerminate: INPUTS_TO_TERMINATE,
+      expectedErrorMessage:
+        '[ERROR] 올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.',
+    });
+  });
+
+  test('Y, N를 입력하지 않은 경우', async () => {
+    await runExceptions({
+      inputs: ['[컵라면-1]', 'YES', 'N'],
+      inputsToTerminate: INPUTS_TO_TERMINATE,
+      expectedErrorMessage: '[ERROR] 잘못된 입력입니다. 다시 입력해 주세요.',
     });
   });
 });
