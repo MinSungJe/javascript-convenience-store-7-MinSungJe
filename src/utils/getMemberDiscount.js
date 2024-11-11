@@ -1,7 +1,10 @@
-import { MEMBERSHIP_DISCOUNT_RATE } from '../constant/config.js';
+import {
+  MEMBERSHIP_DISCOUNT_MAX,
+  MEMBERSHIP_DISCOUNT_RATE,
+} from '../constant/config.js';
 
 const getMemberDiscount = (price) => {
-  return Math.min(8000, price * MEMBERSHIP_DISCOUNT_RATE);
+  return Math.min(MEMBERSHIP_DISCOUNT_MAX, price * MEMBERSHIP_DISCOUNT_RATE);
 };
 
 export default getMemberDiscount;
