@@ -80,10 +80,7 @@ class PromotionCalculator {
     const promotionAmount = this.getPromotionAmount(productName, amount);
     const rest = amount - promotionAmount;
 
-    return (
-      rest === event.buy &&
-      promotionProductQuantity >= promotionAmount + rest + event.get
-    );
+    return rest === event.buy && promotionProductQuantity >= amount + event.get;
   }
 }
 
