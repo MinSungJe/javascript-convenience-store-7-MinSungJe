@@ -6,16 +6,20 @@ class Inventory {
 
   add(product) {
     if (product.getPromotion() !== null) {
-      this.#productList.push(product);
-      this.#productList.push(
-        new Product(product.getName(), product.getPrice(), 0, null)
-      );
+      this.#addEmptyBasicProduct(product);
       return;
     }
 
     const basicProductInfo = this.getBasicProductInfo(product.getName());
     if (basicProductInfo === undefined) this.#productList.push(product);
     else this.#updateBasicProductInfo(product.getName(), product.getQuantity());
+  }
+
+  #addEmptyBasicProduct(product) {
+    this.#productList.push(product);
+    this.#productList.push(
+      new Product(product.getName(), product.getPrice(), 0, null)
+    );
   }
 
   #updateBasicProductInfo(productName, amount) {

@@ -36,11 +36,9 @@ class Purchaser {
       name,
       amount
     );
-
     let userInput = UserAnswer.NO;
     if (canFreeAmount > 0)
       userInput = await this.#getFreeMoreUserInput(name, canFreeAmount);
-
     return this.#processGetFreeMoreInput(userInput, name, amount, recipt);
   }
 

@@ -28,9 +28,7 @@ class App {
 
       const itemList = await this.getItemList();
       const recipt = await this.#purchaser.getPurchaseRecipt(itemList);
-
       OutputView.printRecipt(recipt);
-
       if (await this.askToExit()) break;
     }
   }
