@@ -14,7 +14,7 @@ const loadFromPublic = () => {
   return { inventory, promotionInfo };
 };
 
-const convertProductsList = () => {
+const createProductsList = () => {
   return Loader.products().map(
     ({ name, price, quantity, promotion }) =>
       new Product(name, price, quantity, promotion)
@@ -22,7 +22,7 @@ const convertProductsList = () => {
 };
 
 const addProducts = (inventory) => {
-  convertProductsList().forEach((product) => {
+  createProductsList().forEach((product) => {
     inventory.add(product);
   });
 };
@@ -48,10 +48,10 @@ const loadFileSync = (path) => {
   const rows = data.trim().split('\n');
   const headers = rows[0].trim('\r').split(',');
 
-  return makeDataArray(headers, rows.slice(1));
+  return createDataArray(headers, rows.slice(1));
 };
 
-const makeDataArray = (headers, body) => {
+const createDataArray = (headers, body) => {
   return body.map((row) => {
     const values = row.split(',');
     return createObjectFromRow(values, headers);
