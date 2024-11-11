@@ -4,26 +4,28 @@ import loopWhileValid from './utils/loopWhileValid.js';
 import loadFromPublic from './utils/loadFromPublic.js';
 import parseItemInput from './utils/parseItemInput.js';
 import PromotionCalculator from './utils/PromotionCalculator.js';
-import Recipt from './model/Recipt.js';
+import Purchaser from './controller/Purchaser.js';
 
 class App {
+  #inventory;
+  #purchaser;
+
   constructor() {
     const { inventory, promotionInfo } = loadFromPublic();
-    this.inventory = inventory;
-    this.promotionInfo = promotionInfo;
-    this.promotionCalculator = new PromotionCalculator(
-      inventory,
-      promotionInfo
+    this.#inventory = inventory;
+    this.#purchaser = new Purchaser(
+      this.#inventory,
+      new PromotionCalculator(inventory, promotionInfo)
     );
   }
 
   async run() {
     while (true) {
       OutputView.printMessage('안녕하세요. W편의점입니다.');
-      OutputView.printProducts(this.inventory);
+      OutputView.printProducts(this.#inventory);
 
       const itemList = await this.getItemList();
-      const recipt = await this.getPurchaseRecipt(itemList);
+      const recipt = await this.#purchaser.getPurchaseRecipt(itemList);
 
       OutputView.printRecipt(recipt);
 
@@ -32,100 +34,8 @@ class App {
   }
 
   async getItemList() {
-    const itemInput = await loopWhileValid(InputView.readItem, this.inventory);
+    const itemInput = await loopWhileValid(InputView.readItem, this.#inventory);
     return parseItemInput(itemInput);
-  }
-
-  async getPurchaseRecipt(itemList) {
-    const recipt = new Recipt();
-
-    for (const { name, amount } of itemList) {
-      let totalBuyAmount = amount;
-      totalBuyAmount += await this.getFreeMoreInput(name, amount, recipt);
-      totalBuyAmount += await this.askNotPromotionInput(name, amount, recipt);
-      this.processPurchase(recipt, name, totalBuyAmount);
-    }
-    await this.memberShipInput(recipt);
-    this.calculatePurchase(recipt);
-
-    return recipt;
-  }
-
-  async getFreeMoreInput(name, amount, recipt) {
-    const canFreeAmount = this.promotionCalculator.getCanFreeMore(name, amount);
-    let userInput = 'N';
-    if (canFreeAmount > 0)
-      userInput = await loopWhileValid(
-        InputView.getFreeMore,
-        name,
-        canFreeAmount
-      );
-    return this.processGetFreeMoreInput(userInput, name, amount, recipt);
-  }
-
-  processGetFreeMoreInput(userInput, name, amount) {
-    if (userInput === 'Y')
-      return this.promotionCalculator.getCanFreeMore(name, amount);
-    return 0;
-  }
-
-  async askNotPromotionInput(name, amount) {
-    const basicAmount = this.promotionCalculator.getBasicAmount(name, amount);
-    let userInput = 'Y';
-    const promotionQuantity =
-      this.promotionCalculator.getPromotionProductQuantity(name);
-    if (promotionQuantity > 0 && promotionQuantity < amount)
-      userInput = await loopWhileValid(
-        InputView.askNotPromotion,
-        name,
-        basicAmount
-      );
-    return this.processNotPromotionInput(userInput, name, amount);
-  }
-
-  processNotPromotionInput(userInput, name, amount) {
-    if (userInput === 'N')
-      return -this.promotionCalculator.getBasicAmount(name, amount);
-    return 0;
-  }
-
-  async memberShipInput(recipt) {
-    const userInput = await loopWhileValid(InputView.getMembership);
-    if (userInput === 'Y') recipt.calculateMembershipDiscount();
-  }
-
-  processPurchase(recipt, name, totalBuyAmount) {
-    const price = this.inventory.getBasicProductInfo(name).getPrice();
-    const totalFreeAmount = this.promotionCalculator.getFreeAmount(
-      name,
-      totalBuyAmount
-    );
-    const totalNoPromotionPrice =
-      price * this.promotionCalculator.getBasicAmount(name, totalBuyAmount);
-    recipt.addBuyProduct(name, totalBuyAmount, price * totalBuyAmount);
-    if (totalFreeAmount > 0)
-      recipt.addFreeProduct(name, totalFreeAmount, price * totalFreeAmount);
-    recipt.addNoPromotionPrice(totalNoPromotionPrice);
-    this.buy(name, totalBuyAmount);
-  }
-
-  buy(productName, amount) {
-    const promotionAmountToBuy =
-      this.promotionCalculator.getPromotionAmountToBuy(productName, amount);
-    const basicAmountToBuy = this.promotionCalculator.getBasicAmountToBuy(
-      productName,
-      amount
-    );
-    if (promotionAmountToBuy !== 0)
-      this.inventory.buyPromotionProduct(productName, promotionAmountToBuy);
-    if (basicAmountToBuy !== 0)
-      this.inventory.buyBasicProduct(productName, basicAmountToBuy);
-  }
-
-  calculatePurchase(recipt) {
-    recipt.calculateTotal();
-    recipt.calculatePromotionDiscount();
-    recipt.calculateResult();
   }
 
   async askToExit() {
