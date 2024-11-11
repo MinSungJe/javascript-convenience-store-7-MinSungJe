@@ -1,3 +1,4 @@
+import { UserAnswer } from '../constant/config.js';
 import Recipt from '../model/Recipt.js';
 import loopWhileValid from '../utils/loopWhileValid.js';
 import InputView from '../view/InputView.js';
@@ -36,7 +37,7 @@ class Purchaser {
       amount
     );
 
-    let userInput = 'N';
+    let userInput = UserAnswer.NO;
     if (canFreeAmount > 0)
       userInput = await this.#getFreeMoreUserInput(name, canFreeAmount);
 
@@ -48,7 +49,7 @@ class Purchaser {
   }
 
   #processGetFreeMoreInput(userInput, name, amount) {
-    if (userInput === 'Y')
+    if (userInput === UserAnswer.YES)
       return this.#promotionCalculator.getCanFreeMore(name, amount);
     return 0;
   }
@@ -58,7 +59,7 @@ class Purchaser {
     const promotionQuantity =
       this.#promotionCalculator.getPromotionProductQuantity(name);
 
-    let userInput = 'Y';
+    let userInput = UserAnswer.YES;
     if (promotionQuantity > 0 && promotionQuantity < amount)
       userInput = await this.#getNotPromotionUserInput(name, basicAmount);
 
@@ -70,14 +71,14 @@ class Purchaser {
   }
 
   #processNotPromotionInput(userInput, name, amount) {
-    if (userInput === 'N')
+    if (userInput === UserAnswer.NO)
       return this.#promotionCalculator.getBasicAmount(name, amount);
     return 0;
   }
 
   async #memberShipInput(recipt) {
     const userInput = await loopWhileValid(InputView.getMembership);
-    if (userInput === 'Y') recipt.calculateMembershipDiscount();
+    if (userInput === UserAnswer.YES) recipt.calculateMembershipDiscount();
   }
 
   #buyProduct(productName, amount) {

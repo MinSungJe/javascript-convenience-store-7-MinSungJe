@@ -1,3 +1,5 @@
+import getMemberDiscount from '../utils/getMemberDiscount.js';
+
 class Recipt {
   #history = {
     buy: [],
@@ -64,7 +66,9 @@ class Recipt {
   }
 
   calculateMembershipDiscount() {
-    this.#history.membershipDiscount = this.#history.noPromotionPrice * 0.3;
+    this.#history.membershipDiscount = getMemberDiscount(
+      this.#history.noPromotionPrice
+    );
   }
 
   calculateResult() {

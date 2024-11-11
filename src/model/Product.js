@@ -1,3 +1,5 @@
+import { Outputs } from '../constant/messages.js';
+
 class Product {
   #name;
   #price;
@@ -33,7 +35,7 @@ class Product {
 
   getStringInfo() {
     let quantityString = `${this.#quantity}개`;
-    if (this.#quantity === 0) quantityString = '재고 없음';
+    if (this.#quantity === 0) quantityString = Outputs.NO_PRODUCT;
 
     let promotionString = this.#promotion;
     if (this.#promotion === null) promotionString = '';

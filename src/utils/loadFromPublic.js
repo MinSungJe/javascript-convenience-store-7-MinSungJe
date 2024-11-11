@@ -2,6 +2,7 @@ import fs from 'fs';
 import Inventory from '../model/Inventory.js';
 import PromotionInfo from '../model/PromotionInfo.js';
 import Product from '../model/Product.js';
+import { LoadPath } from '../constant/config.js';
 
 const loadFromPublic = () => {
   const inventory = new Inventory();
@@ -34,24 +35,20 @@ const addPromotions = (promotionInfo) => {
 
 const Loader = {
   products: () => {
-    return loadFileSync('./public/products.md');
+    return loadFileSync(LoadPath.PRODUCTS);
   },
 
   promotions: () => {
-    return loadFileSync('./public/promotions.md');
+    return loadFileSync(LoadPath.PROMOTIONS);
   },
 };
 
 const loadFileSync = (path) => {
-  try {
-    const data = fs.readFileSync(path, 'utf8');
-    const rows = data.trim().split('\n');
-    const headers = rows[0].trim('\r').split(',');
+  const data = fs.readFileSync(path, 'utf8');
+  const rows = data.trim().split('\n');
+  const headers = rows[0].trim('\r').split(',');
 
-    return makeDataArray(headers, rows.slice(1));
-  } catch (err) {
-    throw new Error('[ERROR] 정해진 경로에 파일이 없습니다.');
-  }
+  return makeDataArray(headers, rows.slice(1));
 };
 
 const makeDataArray = (headers, body) => {

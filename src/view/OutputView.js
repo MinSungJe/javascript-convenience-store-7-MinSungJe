@@ -1,4 +1,7 @@
 import { Console } from '@woowacourse/mission-utils';
+import { Outputs } from '../constant/messages.js';
+import padString from '../utils/padString.js';
+import { GAP_AMOUNT, GAP_PRICE } from '../constant/config.js';
 
 const OutputView = {
   printMessage(message) {
@@ -9,8 +12,22 @@ const OutputView = {
     Console.print('');
   },
 
+  printThreeElements(firstString, secondString, thirdString) {
+    Console.print(
+      padString(firstString, GAP_AMOUNT) +
+        padString(secondString, GAP_PRICE) +
+        thirdString
+    );
+  },
+
+  printTwoElements(firstString, secondString) {
+    Console.print(
+      padString(firstString, GAP_AMOUNT + GAP_PRICE) + secondString
+    );
+  },
+
   printProducts(inventory) {
-    Console.print('현재 보유하고 있는 상품입니다.');
+    Console.print(Outputs.CURRENT_INVENTORY);
     Console.print('');
     inventory.getProductList().map((product) => {
       Console.print(product.getStringInfo());
@@ -25,24 +42,26 @@ const OutputView = {
   },
 
   printBuySection(recipt) {
-    Console.print('==============W 편의점================');
-    Console.print('상품명'.padEnd(15) + '수량'.padEnd(10) + '금액');
+    Console.print(Outputs.BUY_TITLE);
+    this.printThreeElements(
+      Outputs.PRODUCT_NAME,
+      Outputs.PRODUCT_AMOUNT,
+      Outputs.PRODUCT_PRICE
+    );
     for (const { name, amount, price } of recipt.getBuyRecipt()) {
-      Console.print(
-        name.padEnd(15) + amount.toString().padEnd(10) + price.toLocaleString()
-      );
+      this.printThreeElements(name, amount.toString(), price.toLocaleString());
     }
   },
 
   printFreeSection(recipt) {
-    Console.print('=============증	정===============');
+    Console.print(Outputs.FREE_TITLE);
     for (const { name, amount } of recipt.getFreeRecipt()) {
-      Console.print(name.padEnd(15) + amount.toString().padEnd(10));
+      Console.print(padString(name, GAP_AMOUNT) + amount.toString());
     }
   },
 
   printTotalSection(recipt) {
-    Console.print('====================================');
+    Console.print(Outputs.TOTAL_TITLE);
     this.printTotalPrice(recipt);
     this.printPromotionDiscount(recipt);
     this.printMembershipDiscount(recipt);
@@ -51,30 +70,31 @@ const OutputView = {
   },
 
   printTotalPrice(recipt) {
-    Console.print(
-      '총구매액'.padEnd(15) +
-        recipt.getTotalAmount().toString().padEnd(10) +
-        recipt.getTotal().toLocaleString()
+    this.printThreeElements(
+      Outputs.TOTAL_PRICE,
+      recipt.getTotalAmount().toString(),
+      recipt.getTotal().toLocaleString()
     );
   },
 
   printPromotionDiscount(recipt) {
-    Console.print(
-      '행사할인'.padEnd(25) +
-        `-${recipt.getPromotionDiscount().toLocaleString()}`
+    this.printTwoElements(
+      Outputs.PROMOTION_DISCOUNT,
+      `-${recipt.getPromotionDiscount().toLocaleString()}`
     );
   },
 
   printMembershipDiscount(recipt) {
-    Console.print(
-      '멤버십할인'.padEnd(25) +
-        `-${recipt.getMembershipDiscount().toLocaleString()}`
+    this.printTwoElements(
+      Outputs.MEMBERSHIP_DISCOUNT,
+      `-${recipt.getMembershipDiscount().toLocaleString()}`
     );
   },
 
   printResultPrice(recipt) {
-    Console.print(
-      '내실돈'.padEnd(25) + `${recipt.getResult().toLocaleString()}`
+    this.printTwoElements(
+      Outputs.RESULT_PRICE,
+      `${recipt.getResult().toLocaleString()}`
     );
   },
 };

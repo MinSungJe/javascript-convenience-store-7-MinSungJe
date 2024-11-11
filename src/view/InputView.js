@@ -1,12 +1,11 @@
 import { Console } from '@woowacourse/mission-utils';
 import Validator from '../utils/Validator.js';
 import OutputView from './OutputView.js';
+import { Inputs } from '../constant/messages.js';
 
 const InputView = {
   async readItem(inventory) {
-    const input = await Console.readLineAsync(
-      '구매하실 상품명과 수량을 입력해 주세요. (예: [사이다-2],[감자칩-1])\n'
-    );
+    const input = await Console.readLineAsync(Inputs.READ_ITEM);
     Validator.checkReadItemInput(input, inventory);
     OutputView.printBlankLine();
     return input;
@@ -31,18 +30,14 @@ const InputView = {
   },
 
   async getMembership() {
-    const input = await Console.readLineAsync(
-      '멤버십 할인을 받으시겠습니까? (Y/N)\n'
-    );
+    const input = await Console.readLineAsync(Inputs.GET_MEMBERSHIP);
     Validator.checkYesOrNo(input);
     OutputView.printBlankLine();
     return input;
   },
 
   async replay() {
-    const input = await Console.readLineAsync(
-      '감사합니다. 구매하고 싶은 다른 상품이 있나요? (Y/N)\n'
-    );
+    const input = await Console.readLineAsync(Inputs.REPLAY);
     Validator.checkYesOrNo(input);
     OutputView.printBlankLine();
     return input;

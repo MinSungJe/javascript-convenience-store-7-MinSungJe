@@ -5,6 +5,8 @@ import loadFromPublic from './utils/loadFromPublic.js';
 import parseItemInput from './utils/parseItemInput.js';
 import PromotionCalculator from './utils/PromotionCalculator.js';
 import Purchaser from './controller/Purchaser.js';
+import { Outputs } from './constant/messages.js';
+import { UserAnswer } from './constant/config.js';
 
 class App {
   #inventory;
@@ -21,7 +23,7 @@ class App {
 
   async run() {
     while (true) {
-      OutputView.printMessage('안녕하세요. W편의점입니다.');
+      OutputView.printMessage(Outputs.WELCOME);
       OutputView.printProducts(this.#inventory);
 
       const itemList = await this.getItemList();
@@ -40,7 +42,7 @@ class App {
 
   async askToExit() {
     const restartInput = await loopWhileValid(InputView.replay);
-    if (restartInput === 'N') return true;
+    if (restartInput === UserAnswer.NO) return true;
     return false;
   }
 }
